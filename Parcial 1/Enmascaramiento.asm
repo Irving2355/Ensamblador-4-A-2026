@@ -28,13 +28,15 @@ main:
     ;encender led y alarma
     ;OR enciende bits
     mov al, regCtrl
-    or  al, (MASK_LED OR MASK_ALARM)  ;(0h)
+    or  al, (MASK_LED + MASK_ALARM)  ;(0h)
     mov outAfterOr, al
     
     ;apagar motor
     ;usamos and y not(mascara)
-    mov al, outAfterOr     ;00000111
-    and al, NOT MASK_MOTOR ;11111101
+    mov al, outAfterOr     ;00000111 
+    mov bl, MASK_MOTOR
+    not bl
+    and al, bl             ;11111101
                            ;00000101 
     mov outAfterAnd, al
     
