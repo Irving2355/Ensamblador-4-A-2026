@@ -62,7 +62,26 @@ pack_x100 proc
     pop bx
     
     ret
-pack_x100 endp
+pack_x100 endp 
+
+unpack_x100 proc
+    push bx
+    push dx
+    
+    xor dx, dx
+    
+    mov bx, 100 
+    div bx
+    
+    mov bl, al
+    mov al, bl
+    mov ah, dl ;fraccion (parte baja de DX)
+    
+    pop dx
+    pop bx   
+    ret
+unpack_x100 endp 
+
 main: 
 
     mov ax, @data
@@ -79,5 +98,59 @@ main:
     mov dl, B_frac
     call pack_x100 
     mov B_x100, ax
+    
+    ;sumar 
+    mov ax, A_x100
+    add ax, B_x100
+    mov S_x100, ax 
+    
+    ;desempaquetar 
+    mov ax, S_x100 
+    call unpack_x100
+    mov S_int,  al
+    mov S_frac, ah
+    
+    ;resta
+    mov ax, A_x100
+    sub ax, B_x100
+    mov R_x100, ax
+    
+    ;producto
+    mov ax, A_x100
+    mov bx, B_x100
+    mul bx ;resultado DX:AX 
+      
+    ;guardado opcional
+    mov word ptr P_x100,   ax
+    mov word ptr P_x100+2, dx
+    
+    ;ajuste
+    mov bx, 100
+    div bx
+    
+    mov word ptr P_x100,   ax
+    mov word ptr P_x100+2, 0 
+    
+    ;division
+    mov ax, B_x100
+    cmp ax, 0
+    jne do_div
+    mov errDiv0, 1
+    jmp end_all
+ 
+do_div:
+    mov ax, A_x100
+    mov bx, 100
+    mul bx 
+    
+    mov bx, B_x100
+    div bx  ;AX cociente dx residuo
+    
+    mov D_x100, ax 
+    
+end_all:
+    HLT 
+    
+    
 
 end main
