@@ -64,6 +64,30 @@ main:
     fld A_val
     fld B_val
     fmul 
-    fstp prodAB
+    fstp prodAB 
 
+    ;******* division A/B ******
+    fld A_val
+    fld B_val  ;sto= B_val, A_val
+    fxch       ;sto= A_val, B_val
+    fdiv       ;A/B
+    fstp divAB 
+
+    ;******* sqrt(4.0) *****
+    fld C4
+    fsqrt
+    fstp sqrtD
+
+    ;*** expresion
+    ;Z = ((A+B)*3)/sqrt(4)
+    fld sumaAB
+    fld C3 
+    fmul 
+    fld sqrtD
+    fxch
+    fdiv
+    fstp exprZ
+
+    xor dx, dx
+    mov dx, offset exprZ
 end main
