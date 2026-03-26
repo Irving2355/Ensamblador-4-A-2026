@@ -36,7 +36,7 @@ main:
 
     comparar:
     cmp si, di
-    jge esPal
+    jge esPal ;>=
 
     mov al, [si]
     mov bl, [di] 
