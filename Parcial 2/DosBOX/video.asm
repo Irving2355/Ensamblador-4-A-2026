@@ -21,6 +21,58 @@ msgLimpio db 'El buffer fue limpiado$'
 msgRepetir db 'Otra vez (s/n): $'
 
 .code
+
+LimpiarPantalla proc 
+    ;int 10h y ah = 06h
+    ;lmpiar una ventana de pantalla
+    ;y el al = 00h se limpia toda el area
+    mov ah, 06h
+    mov al, 00h
+    mov bh, 07h
+    mov ch, 00h
+    mov cl, 00h
+    mov dh, 24h
+    mov dl, 79h
+    int 10h
+
+    mov dh, 0
+    mov dl, 0
+    call PosicionarCursor
+    ret 
+LimpiarPantalla endp
+
+PosicionarCursor proc
+    ;dh = fila y dl = columna
+    ;ah=02h posiciona el cursor
+    mov ah, 02h
+    mov bh, 00h
+    int 10h
+    ret
+PosicionarCursor endp
+
+ImprimirColor proc 
+    siguiente_caracter:
+    lodsb  ; al = [si] si aumenta automaticamente y asigna a al
+    cmp al, '$'
+    je fin_imprimir_color
+
+    ;ah=09h imprime un caracter con atributo
+    mov ah, 09h
+    mov bh, 00h
+    mov cx, 1
+    int 10h
+
+    ;hacemos avanzar el cursos visualmente
+    mov ah, 0Eh
+    mov bh, 00h
+    int 10h
+
+    jmp siguiente_caracter
+
+    fin_imprimir_color:
+    ret
+ImprimirColor endp
+
 main:
     ;iniciar el ds
 
