@@ -73,6 +73,53 @@ ImprimirColor proc
     ret
 ImprimirColor endp
 
+CopiarCadena proc 
+    lea si, cadNombre
+    lea di, nombreLimpio
+
+    xor cx, cx
+    mov cl, contNombre
+
+    jcxz fin_copiado
+
+    copiar_loop:
+    mov al, [si]
+    mov [di], al 
+    inc si
+    inc di 
+    loop copiar_loop 
+
+    fin_copiado:
+    mov byte ptr [di], '$'
+    ret
+CopiarCadena endp
+
+LimpiarBuffer proc 
+    mov contNombre, 0
+    
+    lea di, cadNombre
+    mov cx, 30
+    mov al, 0
+
+    limpiar_loop:
+    mov [di], al 
+    inc di 
+    loop limpiar_loop
+    ret
+LimpiarBuffer endp
+
+LimpiarDestino proc 
+    lea di, nombreLimpio
+    mov cx, 31 
+    mov al, '$'
+
+    limpiar_loop_destino:
+    mov [di], al
+    inc di 
+    loop limpiar_loop_destino
+    ret
+LimpiarDestino endp
+
 main:
     ;iniciar el ds
 
