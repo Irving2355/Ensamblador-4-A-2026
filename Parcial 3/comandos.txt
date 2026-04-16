@@ -1,0 +1,21 @@
+Comandos para linux 
+
+//comando para nasm
+nasm -f alf64 archivo.asm -o archivo.o 
+
+//comando para gcc y enlazar
+gcc main.c archivo.o -o Practica-X -no-pie 
+
+//para ejecutar
+./Practica-X 
+
+Comandos para MacOS 
+
+//comando para nasm
+nasm -f macho64 archivo.asm -o archivo.o 
+
+//comando para gcc y enlazar
+clang main.c archivo.o -o Practica-X 
+
+//para ejecutar
+./Practica-X 
